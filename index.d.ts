@@ -36,6 +36,7 @@ declare interface Config {
   baseMs?: number
   delayMs?: number
   maxRetries?: number
+  logger?: (...args: any) => any;
 }
 
 declare class ServerlessClient {
