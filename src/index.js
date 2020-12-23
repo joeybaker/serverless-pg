@@ -372,11 +372,16 @@ ServerlessClient.prototype.connect = async function() {
   }
 };
 
+let queryCounter = 0
 ServerlessClient.prototype.query = async function(...args){
   try {
-    this._logger("Start query...")
+    const queryId = ++queryCounter
+    const start = Date.now()
+    this._logger("Start query", queryId)
     // We fulfill the promise to catch the error
-    return await this._client.query(...args)
+    const res = await this._client.query(...args)
+    this._logger("Finished query", queryId, "in", Date.now() - start, "ms")
+    return res
   } catch (e) {
     // If a client has been terminated by serverless-postgres and try to query again
     // we re-initialize it and retry
