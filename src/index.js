@@ -226,7 +226,8 @@ ServerlessClient.prototype._validateConfig = function(config){
     capMs,
     baseMs,
     delayMs,
-    maxRetries
+    maxRetries,
+    logger
   } = config
 
   if (
@@ -279,6 +280,10 @@ ServerlessClient.prototype._validateConfig = function(config){
   if (validateNum(maxRetries)){
     throw new Error("maxRetries must be of type Number")
   }
+
+  if (logger != null && typeof logger !== 'function') {
+    throw new Error("logger must be a function")
+  }
 }
 
 ServerlessClient.prototype.setConfig = function (config) {
@@ -327,6 +332,8 @@ ServerlessClient.prototype.setConfig = function (config) {
     retries: 0,
     queryRetries: 0
   }
+
+  if (config.logger) this._logger = config.logger
 }
 
 ServerlessClient.prototype._logger = function(...args) {
