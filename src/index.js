@@ -43,12 +43,12 @@ ServerlessClient.prototype._setMaxConnections = async (__self) => {
 // It is very aggressive and it can cause disruption if a connection was in idle for a short period of time
 ServerlessClient.prototype._getIdleProcessesListOrderByDate = async function() {
   const query = `
-    SELECT pid,backend_start,state 
-    FROM pg_stat_activity 
-    WHERE datname=$1 
-      AND state='idle' 
+    SELECT pid,backend_start,state
+    FROM pg_stat_activity
+    WHERE datname=$1
+      AND state='idle'
       AND usename=$2
-    ORDER BY state_change 
+    ORDER BY state_change
     LIMIT $3;`
 
   const values = [
@@ -78,13 +78,13 @@ ServerlessClient.prototype._getIdleProcessesListByMinimumTimeout = async functio
          EXTRACT(EPOCH FROM (Now() - state_change)) AS idle_time,
          pid
       FROM pg_stat_activity
-      WHERE usename=$1 
-        AND datname=$2 
+      WHERE usename=$1
+        AND datname=$2
         AND state='idle'
     )
-    SELECT pid 
-    FROM processes 
-    WHERE idle_time > $3 
+    SELECT pid
+    FROM processes
+    WHERE idle_time > $3
     LIMIT $4;`
 
   const values = [
@@ -107,9 +107,9 @@ ServerlessClient.prototype._getIdleProcessesListByMinimumTimeout = async functio
 
 ServerlessClient.prototype._getProcessesCount = async function() {
   const query = `
-    SELECT COUNT(pid) 
-    FROM pg_stat_activity 
-    WHERE datname=$1 
+    SELECT COUNT(pid)
+    FROM pg_stat_activity
+    WHERE datname=$1
       AND usename=$2;`
 
   const values = [this._config.database, this._config.user]
@@ -129,8 +129,8 @@ ServerlessClient.prototype._killProcesses = async function(processesList) {
   const pids = processesList.map(proc => proc.pid);
 
   const query = `
-    SELECT pg_terminate_backend(pid) 
-    FROM pg_stat_activity 
+    SELECT pg_terminate_backend(pid)
+    FROM pg_stat_activity
     WHERE pid = ANY ($1) AND state='idle';`
 
   const values = [pids]
@@ -181,7 +181,7 @@ ServerlessClient.prototype.clean = async function() {
 };
 
 ServerlessClient.prototype._init = async function(){
-  if(this._client !== null){
+  if (this._client != null) {
     return
   }
 
