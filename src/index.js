@@ -414,7 +414,7 @@ ServerlessClient.prototype.query = async function(...args){
 ServerlessClient.prototype.end = async function(){
   this._backoff.retries = 0
   this._backoff.queryRetries = 0
-  await this._client.end()
+  if (this._client) await this._client.end()
   this._client = null
 }
 
