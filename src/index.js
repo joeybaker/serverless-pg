@@ -26,10 +26,11 @@ ServerlessClient.prototype._sleep = delay =>
 ServerlessClient.prototype._setMaxConnections = async (__self) => {
   // If cache is expired
   if (Date.now() - __self._maxConns.cache.updated > __self._maxConns.freqMs) {
+    __self._logger("Getting max connections from database...")
     const results = await __self._client.query(`SHOW max_connections`)
     const maxConnections = results.rows[0].max_connections
 
-    __self._logger("Getting max connections from database...", maxConnections)
+    __self._logger("Max DB connections is:", maxConnections)
 
     __self._maxConns.cache = {
       total: maxConnections,
