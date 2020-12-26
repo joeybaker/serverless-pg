@@ -378,6 +378,7 @@ ServerlessClient.prototype.query = async function(...args){
     const queryId = ++queryCounter
     const start = Date.now()
     this._logger("Start query", queryId)
+    if (this._client == null) await this.connect()
     // We fulfill the promise to catch the error
     const res = await this._client.query(...args)
     this._logger("Finished query", queryId, "in", Date.now() - start, "ms")
