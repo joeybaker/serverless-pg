@@ -9,10 +9,12 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "pg": "^7.18.2"
+  "dependencies": {},
+  "peerDependencies": {
+    "pg": ">=7.18.2"
   },
   "devDependencies": {
+    "pg": "^8.5.1",
     "husky": "^4.3.0",
     "jest": "^26.6.1",
     "prettier": "^1.19.1",
@@ -36,7 +38,7 @@
   "keywords": [],
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test"
+      "pre-commit": "exit; npm run test"
     }
   }
 }
